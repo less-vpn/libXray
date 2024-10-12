@@ -23,7 +23,10 @@ apple_xcframework/
 *.aar
 linux_so/
 windows_dll/
+macos_dylib/
 
 dat/
 sub/
 test/
+
+.DS_Store

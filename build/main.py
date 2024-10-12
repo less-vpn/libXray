@@ -6,6 +6,7 @@ from app.apple_go import AppleGoBuilder
 from app.apple_gomobile import AppleGoMobileBuilder
 from app.linux import LinuxBuilder
 from app.windows import WindowsBuilder
+from app.macos import MacosBuilder
 
 
 def build_dir_path():
@@ -35,6 +36,9 @@ if __name__ == "__main__":
         builder.build()
     elif platform == "windows":
         builder = WindowsBuilder(build_dir_path())
+        builder.build()
+    elif platform == "macos":
+        builder = MacosBuilder(build_dir_path())
         builder.build()
     else:
         raise Exception(f"platform {platform} not supported")
