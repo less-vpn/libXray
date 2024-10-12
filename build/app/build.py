@@ -75,6 +75,9 @@ class Builder(object):
         ret = subprocess.run(["go", "get", "-d", "golang.org/x/mobile/cmd/gomobile"])
         if ret.returncode != 0:
             raise Exception("gomobile init failed")
+        ret = subprocess.run(["go", "get", "google.golang.org/genproto@v0.0.0-20240814211410-ddb44dafa142"])
+        if ret.returncode != 0:
+            raise Exception("gomobile init failed")
 
     def prepare_static_lib(self):
         self.copy_template_file()

@@ -11,9 +11,24 @@ import (
 	"strconv"
 	"time"
 
-	libXray "github.com/xtls/libxray"
 	"github.com/xtls/libxray/nodep"
+	"github.com/xtls/libxray/xray"
 )
+
+func LoadGeoData(base64Text string) string {
+	var response nodep.CallResponse[string]
+	req, err := base64.StdEncoding.DecodeString(base64Text)
+	if err != nil {
+		return response.EncodeToBase64("", err)
+	}
+	var request loadGeoDataRequest
+	err = json.Unmarshal(req, &request)
+	if err != nil {
+		return response.EncodeToBase64("", err)
+	}
+	err = xray.LoadGeoData(request.DatDir, request.Name, request.GeoType)
+	return response.EncodeToBase64("", err)
+}
 
 func checkDir(dir string) error {
 	if _, err := os.Stat(dir); err == nil {
@@ -102,7 +117,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	res := libXray.LoadGeoData(geoSiteReq)
+	res := LoadGeoData(geoSiteReq)
 	resp, err := parseCallResponse(res)
 	if err != nil || !resp.Success {
 		fmt.Println("load geosite ", res)
@@ -122,7 +137,7 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	res = libXray.LoadGeoData(geoIpReq)
+	res = LoadGeoData(geoIpReq)
 	resp, err = parseCallResponse(res)
 	if err != nil || !resp.Success {
 		fmt.Println("load geoip ", res)
