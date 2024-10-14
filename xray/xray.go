@@ -3,9 +3,9 @@ package xray
 import (
 	"os"
 	"runtime/debug"
+	"strings"
 
 	"github.com/xtls/libxray/nodep"
-	"github.com/xtls/xray-core/common/cmdarg"
 	"github.com/xtls/xray-core/core"
 	_ "github.com/xtls/xray-core/main/distro/all"
 )
@@ -14,9 +14,9 @@ var (
 	coreServer *core.Instance
 )
 
-func StartXray(configPath string) (*core.Instance, error) {
-	file := cmdarg.Arg{configPath}
-	config, err := core.LoadConfig("json", file)
+func StartXray(configJson string) (*core.Instance, error) {
+	configReader := strings.NewReader(configJson)
+	config, err := core.LoadConfig("json", configReader)
 	if err != nil {
 		return nil, err
 	}
@@ -41,12 +41,12 @@ func setMaxMemory(maxMemory int64) {
 // datDir means the dir which geosite.dat and geoip.dat are in.
 // configPath means the config.json file path.
 // maxMemory means the soft memory limit of golang, see SetMemoryLimit to find more information.
-func RunXray(datDir string, configPath string, maxMemory int64) (err error) {
+func RunXray(datDir string, configJson string, maxMemory int64) (err error) {
 	InitEnv(datDir)
 	if maxMemory > 0 {
 		setMaxMemory(maxMemory)
 	}
-	coreServer, err = StartXray(configPath)
+	coreServer, err = StartXray(configJson)
 	if err != nil {
 		return
 	}

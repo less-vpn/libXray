@@ -82,8 +82,8 @@ func CustomUUID(base64Text string) string {
 }
 
 type testXrayRequest struct {
-	DatDir     string `json:"datDir,omitempty"`
-	ConfigPath string `json:"configPath,omitempty"`
+	DatDir string `json:"datDir,omitempty"`
+	Config string `json:"config"`
 }
 
 // Test Xray Config.
@@ -98,14 +98,14 @@ func TestXray(base64Text string) string {
 	if err != nil {
 		return response.EncodeToBase64("", err)
 	}
-	err = xray.TestXray(request.DatDir, request.ConfigPath)
+	err = xray.TestXray(request.DatDir, request.Config)
 	return response.EncodeToBase64("", err)
 }
 
 type runXrayRequest struct {
-	DatDir     string `json:"datDir,omitempty"`
-	ConfigPath string `json:"configPath,omitempty"`
-	MaxMemory  int64  `json:"maxMemory,omitempty"`
+	MaxMemory int64  `json:"maxMemory,omitempty"`
+	DatDir    string `json:"datDir,omitempty"`
+	Config    string `json:"config"`
 }
 
 // Run Xray instance.
@@ -120,7 +120,7 @@ func RunXray(base64Text string) string {
 	if err != nil {
 		return response.EncodeToBase64("", err)
 	}
-	err = xray.RunXray(request.DatDir, request.ConfigPath, request.MaxMemory)
+	err = xray.RunXray(request.DatDir, request.Config, request.MaxMemory)
 	return response.EncodeToBase64("", err)
 }
 
